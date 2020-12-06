@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag And Drop</title>
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <div id="overlay" class="jelly" draggable="true">
+        <div class="eyes">
+            <div class="eye">
+                <div class="eye-ball">
+                    <div id="pupil-left" class="pupil"></div>
+                </div>
+            </div>
+            <div class="eye">
+                <div class="eye-ball">
+                    <div id="pupil-right" class="pupil"></div>
+                </div>
+            </div>
+        </div>
+        <div id="mouth" class="mouth">
+        </div>
+    </div>
+</body>
+
+<script>
+var offset = [0,0];
+var divOverlay = document.getElementById("overlay");
+var mouth = document.getElementById("mouth")
+var pupilLeft = document.getElementById("pupil-left")
+var pupilRight = document.getElementById("pupil-right")
+var isDown = false;
+
+divOverlay.addEventListener('mousedown', function(e) {
+isDown = true;
+offset = [
+    divOverlay.offsetLeft - e.clientX,
+    divOverlay.offsetTop - e.clientY
+ ];
+}, true);
+
+document.addEventListener('mouseup', function() {
+   isDown = false;
+   clearStyles()
+   divOverlay.classList.add("is-dragging-over")
+}, true);
+
+document.addEventListener('mousemove', function(e) {
+    e.preventDefault()
+    if (isDown) {
+        dragAnimation((e.clientX + offset[0]) + 'px', (e.clientY + offset[1]) + 'px')
+   }
+   else{
+        movePupils(e.clientX * 100 / window.innerWidth + "%", e.clientY * 100 / window.innerHeight + "%")
+   }
+}, true);
+
+dragAnimation = (x, y) => {
+    clearStyles(divOverlay)
+    moveJelly(x, y)
+    openJellyMouth()
+    bounceJelly()
+}
+
+movePupils = (x, y) => {
+    pupilRight.style.left = x
+    pupilRight.style.top = y
+    pupilLeft.style.left = x
+    pupilLeft.style.top = y
+}
+
+openJellyMouth = () => {
+    mouth.classList.add("is-mouth-open")
+}
+
+bounceJelly = () => {
+    divOverlay.classList.add("is-dragging")
+}
+
+moveJelly = (x, y) => {
+    divOverlay.style.left = x;
+    divOverlay.style.top = y
+}
+
+clearStyles = () => {
+    divOverlay.classList.remove('is-dragging-over')
+    divOverlay.classList.remove('is-dragging')
+    mouth.classList.remove('is-mouth-open')
+}
+</script>
+</html>
