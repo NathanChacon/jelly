@@ -26,15 +26,18 @@
 </body>
 
 <script>
-var offset = [0,0];
-var divOverlay = document.getElementById("overlay");
-var mouth = document.getElementById("mouth")
-var pupilLeft = document.getElementById("pupil-left")
-var pupilRight = document.getElementById("pupil-right")
-var isDown = false;
+let offset = [0,0];
+const dragAudio = new Audio('./sounds/jelly-drag.mp3')
+const dropAudio = new Audio('./sounds/jelly-drop.mp3')
+const divOverlay = document.getElementById("overlay");
+const mouth = document.getElementById("mouth")
+const pupilLeft = document.getElementById("pupil-left")
+const pupilRight = document.getElementById("pupil-right")
+let isDown = false;
 
 divOverlay.addEventListener('mousedown', function(e) {
 isDown = true;
+dragAudio.play()
 offset = [
     divOverlay.offsetLeft - e.clientX,
     divOverlay.offsetTop - e.clientY
@@ -42,6 +45,9 @@ offset = [
 }, true);
 
 document.addEventListener('mouseup', function() {
+   if(isDown){
+    dropAudio.play()
+   }
    isDown = false;
    clearStyles()
    divOverlay.classList.add("is-dragging-over")
