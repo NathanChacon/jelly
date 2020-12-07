@@ -29,42 +29,42 @@
 let offset = [0,0];
 const dragAudio = new Audio('./sounds/jelly-drag.mp3')
 const dropAudio = new Audio('./sounds/jelly-drop.mp3')
-const divOverlay = document.getElementById("overlay");
+const jelly = document.getElementById("overlay");
 const mouth = document.getElementById("mouth")
 const pupilLeft = document.getElementById("pupil-left")
 const pupilRight = document.getElementById("pupil-right")
-let isDown = false;
+let isMouseDown = false;
 
-divOverlay.addEventListener('mousedown', function(e) {
-isDown = true;
+jelly.addEventListener('mousedown', function(e) {
+isMouseDown = true;
 dragAudio.play()
 offset = [
-    divOverlay.offsetLeft - e.clientX,
-    divOverlay.offsetTop - e.clientY
+    jelly.offsetLeft - e.clientX,
+    jelly.offsetTop - e.clientY
  ];
 }, true);
 
 document.addEventListener('mouseup', function() {
-   if(isDown){
+   if(isMouseDown){
     dropAudio.play()
    }
-   isDown = false;
+   isMouseDown = false;
    clearStyles()
-   divOverlay.classList.add("is-dragging-over")
+   jelly.classList.add("is-dragging-over")
 }, true);
 
 document.addEventListener('mousemove', function(e) {
     e.preventDefault()
-    if (isDown) {
-        dragAnimation((e.clientX + offset[0]) + 'px', (e.clientY + offset[1]) + 'px')
+    if (isMouseDown) {
+        startDragAnimation((e.clientX + offset[0]) + 'px', (e.clientY + offset[1]) + 'px')
    }
    else{
         movePupils(e.clientX * 100 / window.innerWidth + "%", e.clientY * 100 / window.innerHeight + "%")
    }
 }, true);
 
-dragAnimation = (x, y) => {
-    clearStyles(divOverlay)
+startDragAnimation = (x, y) => {
+    clearStyles(jelly)
     moveJelly(x, y)
     openJellyMouth()
     bounceJelly()
@@ -82,17 +82,17 @@ openJellyMouth = () => {
 }
 
 bounceJelly = () => {
-    divOverlay.classList.add("is-dragging")
+    jelly.classList.add("is-dragging")
 }
 
 moveJelly = (x, y) => {
-    divOverlay.style.left = x;
-    divOverlay.style.top = y
+    jelly.style.left = x;
+    jelly.style.top = y
 }
 
 clearStyles = () => {
-    divOverlay.classList.remove('is-dragging-over')
-    divOverlay.classList.remove('is-dragging')
+    jelly.classList.remove('is-dragging-over')
+    jelly.classList.remove('is-dragging')
     mouth.classList.remove('is-mouth-open')
 }
 </script>
